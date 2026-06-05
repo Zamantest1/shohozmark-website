@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { SERVICES } from "@/data/services";
 
 interface ConsultationModalProps {
@@ -21,6 +21,7 @@ export function ConsultationModal({ children, open, onOpenChange }: Consultation
       <DialogContent className="sm:max-w-[425px] bg-background border-border">
         <DialogHeader>
           <DialogTitle className="font-serif text-2xl font-bold text-foreground">Get a Free Consultation</DialogTitle>
+          <DialogDescription className="text-muted-foreground text-sm">Fill in your details and we'll get back to you within 24 hours.</DialogDescription>
         </DialogHeader>
         <form className="grid gap-4 py-4" onSubmit={(e) => { e.preventDefault(); setOpen(false); }}>
           <div className="grid gap-2">

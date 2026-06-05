@@ -12,7 +12,10 @@ export default function ServicePage() {
   const { slug } = useParams();
   const service = getServiceBySlug(slug || "");
 
-  useSEO(service ? service.seo : { title: "Service Not Found" });
+  useSEO(service
+    ? { ...service.seo, canonical: `https://shohozmark.com/services/${service.slug}` }
+    : { title: "Service Not Found" }
+  );
 
   if (!service) {
     return (

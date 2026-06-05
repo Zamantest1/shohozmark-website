@@ -9,7 +9,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
 export default function Portfolio() {
-  useSEO({ title: "Portfolio & Case Studies", description: "Our work and case studies for Rajshahi businesses." });
+  useSEO({
+    title: "Portfolio & Case Studies — ShohozMark",
+    description: "See real results from ShohozMark's work with local businesses in Rajshahi. Case studies covering social media growth, brand identity, SEO, and digital advertising for restaurants, real estate, and retail.",
+    keywords: ["marketing portfolio Rajshahi", "digital marketing case studies Bangladesh", "social media results", "brand design portfolio", "ShohozMark portfolio"],
+    canonical: "https://shohozmark.com/portfolio",
+  });
   const [filter, setFilter] = useState("All");
 
   const industries = ["All", ...Array.from(new Set(PORTFOLIO_ITEMS.map(item => item.industry)))];

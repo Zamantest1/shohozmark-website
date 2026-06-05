@@ -8,7 +8,12 @@ import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 export default function ServicesPage() {
-  useSEO({ title: "Services — ShohozMark", description: "Marketing services tailored for Rajshahi businesses." });
+  useSEO({
+    title: "Digital Marketing Services — ShohozMark",
+    description: "Explore ShohozMark's full range of digital marketing services in Rajshahi — social media, graphic design, SEO, brand identity, digital advertising, content strategy, and influencer marketing. Affordable packages for local businesses.",
+    keywords: ["digital marketing services Rajshahi", "social media marketing Bangladesh", "graphic design Rajshahi", "local SEO Bangladesh", "brand identity Rajshahi", "affordable marketing services"],
+    canonical: "https://shohozmark.com/services",
+  });
 
   return (
     <div className="bg-background text-foreground min-h-screen selection:bg-primary selection:text-black overflow-x-hidden">

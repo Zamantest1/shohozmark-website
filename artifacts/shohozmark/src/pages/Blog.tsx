@@ -6,7 +6,12 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 
 export default function Blog() {
-  useSEO({ title: "Marketing Insights", description: "Practical tips for growing your local business in Rajshahi." });
+  useSEO({
+    title: "Marketing Blog & Insights — ShohozMark",
+    description: "Practical marketing tips, strategies, and insights for local businesses in Rajshahi and Bangladesh. Learn how to grow your restaurant, retail store, or real estate business online.",
+    keywords: ["marketing tips Rajshahi", "local business growth Bangladesh", "social media tips", "digital marketing blog", "SEO tips Bangladesh", "restaurant marketing"],
+    canonical: "https://shohozmark.com/blog",
+  });
 
   const featured = getFeaturedBlogPosts()[0];
   const others = BLOG_POSTS.filter(p => p.id !== featured?.id);

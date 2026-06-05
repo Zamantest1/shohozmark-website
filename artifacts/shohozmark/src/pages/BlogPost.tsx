@@ -10,7 +10,10 @@ export default function BlogPost() {
   const { slug } = useParams();
   const post = getBlogPostBySlug(slug || "");
 
-  useSEO(post ? post.seo : { title: "Blog Post Not Found" });
+  useSEO(post
+    ? { ...post.seo, ogType: "article" as const, canonical: `https://shohozmark.com/blog/${post.slug}` }
+    : { title: "Blog Post Not Found" }
+  );
 
   if (!post) {
     return (

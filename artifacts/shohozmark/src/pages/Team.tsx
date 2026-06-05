@@ -27,8 +27,9 @@ const SOCIAL_ICONS = {
 export default function Team() {
   useSEO({
     title: "Meet the Team — ShohozMark",
-    description: "The strategists, designers, and marketers behind Rajshahi's fastest-growing local brands.",
-    keywords: ["ShohozMark team", "marketing team Rajshahi", "digital marketing experts Bangladesh"],
+    description: "Meet the marketing experts behind ShohozMark — Rajshahi's most trusted digital marketing agency. Strategists, designers, and creators passionate about growing local businesses in Bangladesh.",
+    keywords: ["ShohozMark team", "marketing experts Rajshahi", "digital marketing agency Bangladesh", "Sabbir Ahmed ShohozMark"],
+    canonical: "https://shohozmark.com/team",
   });
 
   return (

@@ -7,12 +7,15 @@ interface SEOOptions {
   ogTitle?: string;
   ogDescription?: string;
   ogType?: "website" | "article";
+  ogImage?: string;
   canonical?: string;
 }
 
 const SITE_NAME = "ShohozMark";
+const SITE_URL = "https://shohozmark.com";
 const DEFAULT_DESCRIPTION =
-  "ShohozMark — Affordable marketing for local businesses in Rajshahi, Bangladesh. Social media, graphic design, SEO, and more.";
+  "ShohozMark — Affordable digital marketing for local businesses in Rajshahi, Bangladesh. Social media, graphic design, SEO, brand identity, and more.";
+const DEFAULT_OG_IMAGE = `${SITE_URL}/opengraph.jpg`;
 
 export function useSEO(options: SEOOptions): void {
   useEffect(() => {
@@ -32,21 +35,28 @@ export function useSEO(options: SEOOptions): void {
       return el;
     };
 
-    const metas: HTMLMetaElement[] = [];
+    const desc = options.description ?? DEFAULT_DESCRIPTION;
+    const ogTitle = options.ogTitle ?? options.title;
+    const ogDesc = options.ogDescription ?? desc;
+    const ogImage = options.ogImage ?? DEFAULT_OG_IMAGE;
 
-    if (options.description) {
-      metas.push(setMeta("description", options.description));
-    }
-    if (options.keywords && options.keywords.length > 0) {
-      metas.push(setMeta("keywords", options.keywords.join(", ")));
+    setMeta("description", desc);
+    if (options.keywords?.length) {
+      setMeta("keywords", options.keywords.join(", "));
     }
 
-    metas.push(setMeta("og:title", options.ogTitle ?? options.title, true));
-    metas.push(
-      setMeta("og:description", options.ogDescription ?? options.description ?? DEFAULT_DESCRIPTION, true)
-    );
-    metas.push(setMeta("og:type", options.ogType ?? "website", true));
-    metas.push(setMeta("og:site_name", SITE_NAME, true));
+    setMeta("og:title", ogTitle, true);
+    setMeta("og:description", ogDesc, true);
+    setMeta("og:type", options.ogType ?? "website", true);
+    setMeta("og:site_name", SITE_NAME, true);
+    setMeta("og:image", ogImage, true);
+    setMeta("og:url", options.canonical ?? SITE_URL, true);
+
+    setMeta("twitter:card", "summary_large_image");
+    setMeta("twitter:title", ogTitle);
+    setMeta("twitter:description", ogDesc);
+    setMeta("twitter:image", ogImage);
+    setMeta("twitter:site", "@shohozmark");
 
     if (options.canonical) {
       let link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
@@ -61,5 +71,11 @@ export function useSEO(options: SEOOptions): void {
     return () => {
       document.title = prevTitle;
     };
-  }, [options.title, options.description, options.keywords?.join(","), options.canonical]);
+  }, [
+    options.title,
+    options.description,
+    options.keywords?.join(","),
+    options.canonical,
+    options.ogImage,
+  ]);
 }
