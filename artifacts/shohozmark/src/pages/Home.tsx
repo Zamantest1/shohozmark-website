@@ -2,13 +2,21 @@ import React, { useState, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import {
   ArrowRight, CheckCircle2, MapPin, Mail, Instagram, Facebook,
-  BarChart3, PenTool, LayoutTemplate, Megaphone, Smartphone, Search, Menu, X
+  BarChart3, PenTool, LayoutTemplate, Megaphone, Smartphone, Search, Menu, X, Users
 } from "lucide-react";
+import { Link } from "wouter";
 
 import greenLogo from "@assets/Green_1780696036870.png";
-import whiteLogo from "@assets/White_1780696036870.png";
-import blackLogo from "@assets/Black_1780696036868.png";
 import yellowLogo from "@assets/Yellow_1780696036871.png";
+
+import { SERVICES } from "@/data/services";
+import { getFeaturedTestimonials } from "@/data/testimonials";
+import { getFeaturedBlogPosts } from "@/data/blog";
+import { getAvatarPlaceholder } from "@/lib/media";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { ConsultationModal } from "@/components/ConsultationModal";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const FADE_UP = {
   hidden: { opacity: 0, y: 30 },
@@ -25,43 +33,28 @@ export default function Home() {
   const yHero = useTransform(scrollYProgress, [0, 0.3], [0, 60]);
   const opacityHero = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
 
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [mobileMenuOpen]);
+  const testimonials = getFeaturedTestimonials();
+  const blogPosts = getFeaturedBlogPosts().slice(0, 2);
 
   const scrollTo = (id: string) => {
-    setMobileMenuOpen(false);
     setTimeout(() => {
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: "smooth" });
-    }, mobileMenuOpen ? 300 : 0);
+    }, 0);
   };
 
-  const NAV_LINKS = [
-    { label: "Services", id: "services" },
-    { label: "Values", id: "why" },
-    { label: "Process", id: "process" },
-    { label: "Contact", id: "contact" },
-  ];
+  const ICONS: Record<string, React.ReactNode> = {
+    Smartphone: <Smartphone className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />,
+    PenTool: <PenTool className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />,
+    LayoutTemplate: <LayoutTemplate className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />,
+    CheckCircle2: <CheckCircle2 className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />,
+    Megaphone: <Megaphone className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />,
+    Search: <Search className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />,
+    Users: <Users className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />
+  };
 
   return (
     <div className="bg-background text-foreground min-h-screen selection:bg-primary selection:text-black overflow-x-hidden relative">
-
-      {/* Background Noise Texture */}
       <div
         className="fixed inset-0 z-0 opacity-20 pointer-events-none"
         style={{
@@ -70,92 +63,7 @@ export default function Home() {
         }}
       />
 
-      {/* ── NAVBAR ── */}
-      <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-background/95 backdrop-blur-md shadow-lg" : "bg-background/80 backdrop-blur-md"
-        } border-b border-border/50`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-4">
-          {/* Logo */}
-          <button
-            onClick={() => scrollTo("hero")}
-            className="flex items-center gap-2 sm:gap-3 shrink-0 min-w-0"
-            data-testid="nav-logo"
-          >
-            <img src={whiteLogo} alt="ShohozMark Logo" className="h-6 sm:h-8 w-auto shrink-0" />
-            <span className="font-serif font-extrabold text-base sm:text-xl tracking-tight truncate">
-              ShohozMark
-            </span>
-          </button>
-
-          {/* Desktop nav links */}
-          <div className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium tracking-wide shrink-0">
-            {NAV_LINKS.map((link) => (
-              <button
-                key={link.id}
-                onClick={() => scrollTo(link.id)}
-                className="hover:text-primary transition-colors whitespace-nowrap"
-                data-testid={`nav-link-${link.id}`}
-              >
-                {link.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Right side: CTA + hamburger */}
-          <div className="flex items-center gap-3 shrink-0">
-            <button
-              onClick={() => scrollTo("contact")}
-              className="hidden sm:block bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-4 sm:px-6 py-2 sm:py-2.5 text-sm rounded-sm transition-transform hover:scale-105 active:scale-95 whitespace-nowrap"
-              data-testid="nav-cta"
-            >
-              Let's Talk
-            </button>
-            <button
-              className="md:hidden p-2 -mr-1 text-foreground hover:text-primary transition-colors"
-              onClick={() => setMobileMenuOpen((v) => !v)}
-              aria-label="Toggle menu"
-              data-testid="nav-hamburger"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile menu drawer */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.25, ease: "easeInOut" }}
-              className="md:hidden overflow-hidden border-t border-border bg-background"
-            >
-              <div className="px-6 py-6 flex flex-col gap-1">
-                {NAV_LINKS.map((link) => (
-                  <button
-                    key={link.id}
-                    onClick={() => scrollTo(link.id)}
-                    className="w-full text-left py-3 text-base font-medium hover:text-primary transition-colors border-b border-border/40 last:border-0"
-                    data-testid={`mobile-nav-${link.id}`}
-                  >
-                    {link.label}
-                  </button>
-                ))}
-                <button
-                  onClick={() => scrollTo("contact")}
-                  className="mt-4 bg-primary text-primary-foreground font-bold py-3 rounded-sm w-full text-center hover:bg-primary/90 transition-colors"
-                  data-testid="mobile-nav-cta"
-                >
-                  Let's Talk
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
+      <Navbar />
 
       <main className="relative z-10 pt-16 sm:pt-20">
 
@@ -186,157 +94,100 @@ export default function Home() {
               variants={FADE_UP}
               className="font-serif font-extrabold tracking-tight leading-[1.05] mb-4 sm:mb-6 w-full"
               style={{ fontSize: "clamp(1.6rem, 8.5vw, 5rem)", textAlign: "center", maxWidth: "100%" }}
-              data-testid="hero-heading"
             >
-              MARKETING{" "}
-              <br />
-              <span className="text-primary italic font-light pr-1">MADE</span>{" "}
-              EASY.
+              MARKETING <br />
+              <span className="text-primary italic font-light pr-1">MADE</span> EASY.
             </motion.h1>
 
             <motion.p
               variants={FADE_UP}
               className="text-base sm:text-xl md:text-2xl text-muted-foreground font-light max-w-xl sm:max-w-2xl mx-auto mb-8 sm:mb-10 px-2"
-              data-testid="hero-subtitle"
             >
               Big agency results. Local prices. We help Rajshahi businesses grow effortlessly.
             </motion.p>
 
-            <motion.div
-              variants={FADE_UP}
-              className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full max-w-sm sm:max-w-none mx-auto"
-            >
-              <button
-                onClick={() => scrollTo("contact")}
-                className="bg-primary text-black font-bold text-base sm:text-lg px-6 sm:px-8 py-3.5 sm:py-4 rounded-sm hover:bg-primary/90 transition-all hover:scale-105 flex items-center gap-2 w-full sm:w-auto justify-center group"
-                data-testid="hero-cta-primary"
-              >
-                Start Growing{" "}
-                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
+            <motion.div variants={FADE_UP} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full max-w-sm sm:max-w-none mx-auto">
+              <ConsultationModal>
+                <button className="bg-primary text-black font-bold text-base sm:text-lg px-6 sm:px-8 py-3.5 sm:py-4 rounded-sm hover:bg-primary/90 transition-all hover:scale-105 flex items-center gap-2 w-full sm:w-auto justify-center group">
+                  Start Growing <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </ConsultationModal>
               <button
                 onClick={() => scrollTo("services")}
                 className="bg-transparent text-white border border-border font-bold text-base sm:text-lg px-6 sm:px-8 py-3.5 sm:py-4 rounded-sm hover:bg-white/5 transition-all w-full sm:w-auto justify-center"
-                data-testid="hero-cta-secondary"
               >
                 See Services
               </button>
             </motion.div>
           </motion.div>
-
-          {/* Decorative geometric — hidden on small screens to prevent overflow */}
-          <div className="hidden sm:block absolute left-0 bottom-0 w-64 h-64 border-t border-r border-primary/20 -translate-x-1/2 translate-y-1/2 rotate-45 pointer-events-none" />
-          <div className="hidden sm:block absolute right-0 top-32 w-48 h-48 border-b border-l border-primary/20 translate-x-1/2 -translate-y-1/2 rotate-[30deg] pointer-events-none" />
         </section>
 
-        {/* ── SERVICES ── */}
-        <section id="services" className="py-16 sm:py-24 md:py-32 bg-background border-t border-border">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={STAGGER}
-              className="mb-10 sm:mb-16"
-            >
-              <motion.span
-                variants={FADE_UP}
-                className="text-primary font-bold tracking-[0.2em] text-xs sm:text-sm uppercase mb-3 sm:mb-4 block"
-              >
-                01 — Services
-              </motion.span>
-              <motion.h2
-                variants={FADE_UP}
-                className="font-serif font-bold max-w-3xl"
-                style={{ fontSize: "clamp(1.75rem, 6vw, 3.75rem)" }}
-              >
-                What we do best.
-              </motion.h2>
-            </motion.div>
-
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={STAGGER}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+        {/* ── CLIENT TRUST BAR ── */}
+        <section className="py-10 sm:py-12 border-y border-border bg-card overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-6 text-center">
+            <span className="text-muted-foreground text-sm font-medium tracking-widest uppercase">Trusted by Rajshahi's best</span>
+          </div>
+          <div className="flex gap-6 overflow-hidden">
+            <motion.div 
+              className="flex gap-6 min-w-max px-4"
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
             >
               {[
-                {
-                  title: "Social Media Marketing",
-                  desc: "Facebook, Instagram campaigns tailored for Rajshahi audiences.",
-                  icon: <Smartphone className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />,
-                },
-                {
-                  title: "Graphic Design",
-                  desc: "Logos, banners, menus, flyers that make your brand memorable.",
-                  icon: <PenTool className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />,
-                },
-                {
-                  title: "Content Strategy",
-                  desc: "Engaging content that converts scrollers into loyal customers.",
-                  icon: <LayoutTemplate className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />,
-                },
-                {
-                  title: "Brand Identity",
-                  desc: "Full brand systems for restaurants, real estate & retail.",
-                  icon: <CheckCircle2 className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />,
-                },
-                {
-                  title: "Digital Advertising",
-                  desc: "Targeted ads that reach local buyers exactly when they're looking.",
-                  icon: <Megaphone className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />,
-                },
-                {
-                  title: "Local SEO",
-                  desc: "Get discovered by customers searching for businesses in your area.",
-                  icon: <Search className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />,
-                },
-              ].map((s, i) => (
-                <motion.div
-                  key={i}
-                  variants={FADE_UP}
-                  className="bg-card border border-card-border p-6 sm:p-8 rounded-sm hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-300 group"
-                  style={{ borderTopWidth: "4px", borderTopColor: "transparent" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.borderTopColor = "#00C853")}
-                  onMouseLeave={(e) => (e.currentTarget.style.borderTopColor = "transparent")}
-                  data-testid={`service-card-${i}`}
-                >
-                  <div className="mb-4 sm:mb-6 bg-background inline-flex p-2.5 sm:p-3 rounded-sm border border-border group-hover:border-primary/50 transition-colors">
-                    {s.icon}
-                  </div>
-                  <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 sm:mb-3">{s.title}</h3>
-                  <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">{s.desc}</p>
-                </motion.div>
+                "Spice Garden", "Skyline Properties", "Trend Fashion", "Mediscan", "Bloom Beauty", "Nova Real Estate",
+                "Spice Garden", "Skyline Properties", "Trend Fashion", "Mediscan", "Bloom Beauty", "Nova Real Estate"
+              ].map((client, i) => (
+                <div key={i} className="px-6 py-3 bg-background/50 border border-border rounded-full flex items-center justify-center">
+                  <span className="font-serif font-bold text-muted-foreground text-lg whitespace-nowrap opacity-60 hover:opacity-100 transition-opacity">{client}</span>
+                </div>
               ))}
             </motion.div>
           </div>
         </section>
 
+        {/* ── SERVICES ── */}
+        <section id="services" className="py-16 sm:py-24 md:py-32 bg-background border-b border-border">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={STAGGER} className="mb-10 sm:mb-16">
+              <motion.span variants={FADE_UP} className="text-primary font-bold tracking-[0.2em] text-xs sm:text-sm uppercase mb-3 sm:mb-4 block">01 — Services</motion.span>
+              <motion.h2 variants={FADE_UP} className="font-serif font-bold max-w-3xl" style={{ fontSize: "clamp(1.75rem, 6vw, 3.75rem)" }}>What we do best.</motion.h2>
+            </motion.div>
+
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={STAGGER} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-12">
+              {SERVICES.map((s, i) => (
+                <Link key={s.id} href={`/services/${s.slug}`}>
+                  <motion.div variants={FADE_UP} className="bg-card border border-card-border p-6 sm:p-8 rounded-sm hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-300 group cursor-pointer" style={{ borderTopWidth: "4px", borderTopColor: "transparent" }} onMouseEnter={(e) => (e.currentTarget.style.borderTopColor = s.color)} onMouseLeave={(e) => (e.currentTarget.style.borderTopColor = "transparent")}>
+                    <div className="mb-4 sm:mb-6 bg-background inline-flex p-2.5 sm:p-3 rounded-sm border border-border group-hover:border-primary/50 transition-colors">
+                      {ICONS[s.icon]}
+                    </div>
+                    <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 sm:mb-3 group-hover:text-primary transition-colors">{s.title}</h3>
+                    <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">{s.shortDescription}</p>
+                  </motion.div>
+                </Link>
+              ))}
+            </motion.div>
+
+            <div className="bg-primary/10 border border-primary/20 rounded-sm p-6 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+              <div>
+                <h3 className="font-serif text-2xl font-bold mb-2 text-foreground">Need a custom strategy?</h3>
+                <p className="text-muted-foreground">Let's discuss how we can tailor these services to your business goals.</p>
+              </div>
+              <ConsultationModal>
+                <button className="bg-primary text-black font-bold px-6 py-3 rounded-sm hover:bg-primary/90 transition-transform hover:scale-105 shrink-0">Get a Free Consultation</button>
+              </ConsultationModal>
+            </div>
+          </div>
+        </section>
+
         {/* ── TAGLINE MARQUEE ── */}
         <div className="overflow-hidden bg-primary py-6 sm:py-8 relative">
-          <motion.div
-            className="flex items-center gap-8 sm:gap-12 whitespace-nowrap"
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
-          >
+          <motion.div className="flex items-center gap-8 sm:gap-12 whitespace-nowrap" animate={{ x: ["0%", "-50%"] }} transition={{ repeat: Infinity, duration: 25, ease: "linear" }}>
             {[
-              "SHOHOZ-E GROW KORO",
-              "MARKETING MADE EASY",
-              "BIG AGENCY RESULTS. LOCAL PRICES",
-              "YOUR BRAND. OUR MISSION",
-              "SHOHOZ-E GROW KORO",
-              "MARKETING MADE EASY",
-              "BIG AGENCY RESULTS. LOCAL PRICES",
-              "YOUR BRAND. OUR MISSION",
+              "SHOHOZ-E GROW KORO", "MARKETING MADE EASY", "BIG AGENCY RESULTS. LOCAL PRICES", "YOUR BRAND. OUR MISSION",
+              "SHOHOZ-E GROW KORO", "MARKETING MADE EASY", "BIG AGENCY RESULTS. LOCAL PRICES", "YOUR BRAND. OUR MISSION",
             ].map((text, i) => (
               <React.Fragment key={i}>
-                <span
-                  className="font-serif font-black text-black uppercase tracking-tighter shrink-0"
-                  style={{ fontSize: "clamp(2rem, 8vw, 5rem)" }}
-                >
-                  {text}
-                </span>
+                <span className="font-serif font-black text-black uppercase tracking-tighter shrink-0" style={{ fontSize: "clamp(2rem, 8vw, 5rem)" }}>{text}</span>
                 <span className="text-black/40 font-black text-2xl sm:text-4xl shrink-0">&times;</span>
               </React.Fragment>
             ))}
@@ -347,32 +198,11 @@ export default function Home() {
         <section id="why" className="py-16 sm:py-24 md:py-32 bg-background relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-100px" }}
-                variants={STAGGER}
-                className="lg:col-span-5"
-              >
-                <motion.span
-                  variants={FADE_UP}
-                  className="text-primary font-bold tracking-[0.2em] text-xs sm:text-sm uppercase mb-3 sm:mb-4 block"
-                >
-                  02 — Values
-                </motion.span>
-                <motion.h2
-                  variants={FADE_UP}
-                  className="font-serif font-bold mb-4 sm:mb-6"
-                  style={{ fontSize: "clamp(1.75rem, 6vw, 3.75rem)" }}
-                >
-                  Why local brands choose us.
-                </motion.h2>
-                <motion.p variants={FADE_UP} className="text-muted-foreground text-base sm:text-lg mb-6 sm:mb-8">
-                  We don't do cookie-cutter. We build tailored strategies for restaurants, retail, and real estate in Rajshahi.
-                </motion.p>
-                <motion.div variants={FADE_UP}>
-                  <img src={yellowLogo} alt="ShohozMark Highlight Logo" className="w-24 sm:w-32 opacity-80" />
-                </motion.div>
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={STAGGER} className="lg:col-span-5">
+                <motion.span variants={FADE_UP} className="text-primary font-bold tracking-[0.2em] text-xs sm:text-sm uppercase mb-3 sm:mb-4 block">02 — Values</motion.span>
+                <motion.h2 variants={FADE_UP} className="font-serif font-bold mb-4 sm:mb-6" style={{ fontSize: "clamp(1.75rem, 6vw, 3.75rem)" }}>Why local brands choose us.</motion.h2>
+                <motion.p variants={FADE_UP} className="text-muted-foreground text-base sm:text-lg mb-6 sm:mb-8">We don't do cookie-cutter. We build tailored strategies for restaurants, retail, and real estate in Rajshahi.</motion.p>
+                <motion.div variants={FADE_UP}><img src={yellowLogo} alt="ShohozMark Highlight Logo" className="w-24 sm:w-32 opacity-80" /></motion.div>
               </motion.div>
 
               <div className="lg:col-span-7 flex flex-col gap-6 sm:gap-8">
@@ -382,28 +212,10 @@ export default function Home() {
                   { num: "03", title: "Creative", desc: "Bold designs and fresh campaigns that make local brands stand out." },
                   { num: "04", title: "Trustworthy", desc: "We deliver what we promise. Transparent pricing, honest communication, real results." },
                 ].map((val, i) => (
-                  <motion.div
-                    key={i}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-50px" }}
-                    variants={FADE_UP}
-                    className="flex gap-4 sm:gap-6 items-start group"
-                    data-testid={`value-card-${i}`}
-                  >
-                    <div
-                      className="font-serif font-black text-transparent shrink-0 pt-1"
-                      style={{
-                        fontSize: "clamp(2rem, 8vw, 3rem)",
-                        WebkitTextStroke: "1px #2E2E2E",
-                      }}
-                    >
-                      {val.num}
-                    </div>
+                  <motion.div key={i} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={FADE_UP} className="flex gap-4 sm:gap-6 items-start group">
+                    <div className="font-serif font-black text-transparent shrink-0 pt-1" style={{ fontSize: "clamp(2rem, 8vw, 3rem)", WebkitTextStroke: "1px #2E2E2E" }}>{val.num}</div>
                     <div>
-                      <h3 className="font-serif text-xl sm:text-2xl font-bold mb-1 sm:mb-2 group-hover:text-primary transition-colors">
-                        {val.title}
-                      </h3>
+                      <h3 className="font-serif text-xl sm:text-2xl font-bold mb-1 sm:mb-2 group-hover:text-primary transition-colors">{val.title}</h3>
                       <p className="text-muted-foreground text-base sm:text-lg">{val.desc}</p>
                     </div>
                   </motion.div>
@@ -417,32 +229,56 @@ export default function Home() {
         <section className="py-16 sm:py-24 border-y border-border relative overflow-hidden bg-card">
           <div className="absolute inset-0 bg-primary/5 pointer-events-none" />
           <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 text-center divide-y sm:divide-y-0 sm:divide-x divide-border">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-12 text-center">
               {[
                 { value: "50+", label: "Local Brands Served" },
                 { value: "100%", label: "Client Satisfaction" },
                 { value: "3+", label: "Years in Rajshahi" },
+                { value: "7", label: "Service Specialities" }
               ].map((stat, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="py-8 sm:py-0"
-                  data-testid={`stat-${i}`}
-                >
-                  <div
-                    className="font-serif font-extrabold text-primary mb-2"
-                    style={{ fontSize: "clamp(3rem, 12vw, 4.5rem)" }}
-                  >
-                    {stat.value}
-                  </div>
-                  <div className="text-muted-foreground font-medium uppercase tracking-wider text-xs sm:text-sm">
-                    {stat.label}
+                <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="py-4">
+                  <div className="font-serif font-extrabold text-primary mb-2" style={{ fontSize: "clamp(2.5rem, 8vw, 4rem)" }}>{stat.value}</div>
+                  <div className="text-muted-foreground font-medium uppercase tracking-wider text-xs sm:text-sm">{stat.label}</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── TESTIMONIALS ── */}
+        <section className="py-16 sm:py-24 md:py-32 bg-background border-b border-border">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={STAGGER} className="mb-12 sm:mb-16 text-center">
+              <motion.span variants={FADE_UP} className="text-primary font-bold tracking-[0.2em] text-xs sm:text-sm uppercase mb-3 sm:mb-4 block">04 — Testimonials</motion.span>
+              <motion.h2 variants={FADE_UP} className="font-serif font-bold" style={{ fontSize: "clamp(1.75rem, 6vw, 3.75rem)" }}>What our clients say.</motion.h2>
+            </motion.div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-16">
+              {testimonials.map((t, i) => (
+                <motion.div key={t.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="bg-card border border-card-border p-6 sm:p-8 rounded-sm border-l-4 border-l-primary flex flex-col">
+                  <div className="text-primary mb-4 text-xl">★★★★★</div>
+                  <p className="text-white text-base sm:text-lg italic mb-8 flex-1">"{t.quote}"</p>
+                  <div className="flex items-center gap-4">
+                    <img src={getAvatarPlaceholder(t.initials)} alt={t.name} className="w-12 h-12 rounded-full border border-border" />
+                    <div>
+                      <div className="font-bold text-foreground">{t.name}</div>
+                      <div className="text-xs text-muted-foreground">{t.role}, {t.company}</div>
+                      <div className="text-[10px] text-primary/80 mt-1 uppercase tracking-wider">{t.serviceUsed}</div>
+                    </div>
                   </div>
                 </motion.div>
               ))}
+            </div>
+
+            <div className="bg-card border border-border rounded-sm p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 max-w-4xl mx-auto">
+              <div className="text-center sm:text-left">
+                <h3 className="font-serif text-xl font-bold mb-2">Request a Free Audit</h3>
+                <p className="text-sm text-muted-foreground">Let's see where your business has room to grow.</p>
+              </div>
+              <form className="flex w-full sm:w-auto gap-2" onSubmit={e => e.preventDefault()}>
+                <input type="email" placeholder="Email Address" className="bg-background border border-input rounded-sm px-3 py-2 text-sm flex-1 min-w-[200px]" required />
+                <button type="submit" className="bg-primary text-black font-bold px-4 py-2 rounded-sm hover:bg-primary/90 transition-colors whitespace-nowrap">Submit</button>
+              </form>
             </div>
           </div>
         </section>
@@ -450,50 +286,21 @@ export default function Home() {
         {/* ── PROCESS ── */}
         <section id="process" className="py-16 sm:py-24 md:py-32">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={STAGGER}
-              className="mb-12 sm:mb-16"
-            >
-              <motion.span
-                variants={FADE_UP}
-                className="text-primary font-bold tracking-[0.2em] text-xs sm:text-sm uppercase mb-3 sm:mb-4 block"
-              >
-                03 — Process
-              </motion.span>
-              <motion.h2
-                variants={FADE_UP}
-                className="font-serif font-bold"
-                style={{ fontSize: "clamp(1.75rem, 6vw, 3.75rem)" }}
-              >
-                How we work.
-              </motion.h2>
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={STAGGER} className="mb-12 sm:mb-16">
+              <motion.span variants={FADE_UP} className="text-primary font-bold tracking-[0.2em] text-xs sm:text-sm uppercase mb-3 sm:mb-4 block">05 — Process</motion.span>
+              <motion.h2 variants={FADE_UP} className="font-serif font-bold" style={{ fontSize: "clamp(1.75rem, 6vw, 3.75rem)" }}>How we work.</motion.h2>
             </motion.div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 relative">
-              {/* Connecting line — desktop only */}
               <div className="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-[1px] bg-border z-0" />
-
               {[
                 { step: "1", title: "Discovery", desc: "We learn about your brand, goals, and audience." },
                 { step: "2", title: "Strategy", desc: "We map out a plan tailored to your budget." },
                 { step: "3", title: "Create", desc: "We design, write, and build the assets." },
                 { step: "4", title: "Launch", desc: "We execute the campaign and track results." },
               ].map((p, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="relative z-10 flex flex-col items-center group"
-                  data-testid={`process-step-${i}`}
-                >
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-background border border-primary text-primary flex items-center justify-center font-serif text-lg sm:text-2xl font-bold mb-4 sm:mb-6 group-hover:bg-primary group-hover:text-black transition-colors shadow-[0_0_15px_rgba(0,200,83,0.15)]">
-                    {p.step}
-                  </div>
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="relative z-10 flex flex-col items-center group">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-background border border-primary text-primary flex items-center justify-center font-serif text-lg sm:text-2xl font-bold mb-4 sm:mb-6 group-hover:bg-primary group-hover:text-black transition-colors shadow-[0_0_15px_rgba(0,200,83,0.15)]">{p.step}</div>
                   <h3 className="font-serif text-base sm:text-xl font-bold mb-1 sm:mb-2">{p.title}</h3>
                   <p className="text-muted-foreground text-xs sm:text-sm max-w-[160px] sm:max-w-[200px]">{p.desc}</p>
                 </motion.div>
@@ -502,154 +309,136 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── CONTACT / CTA ── */}
-        <section
-          id="contact"
-          className="py-16 sm:py-24 md:py-32 bg-primary text-primary-foreground relative overflow-hidden"
-        >
-          <div
-            className="absolute inset-0 opacity-10 pointer-events-none"
-            style={{
-              backgroundImage: "radial-gradient(circle at center, #000 2px, transparent 2px)",
-              backgroundSize: "32px 32px",
-            }}
-          />
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10 lg:gap-12">
-            <div className="w-full lg:w-1/2">
-              <h2
-                className="font-serif font-black mb-4 sm:mb-6 leading-tight"
-                style={{ fontSize: "clamp(2rem, 10vw, 4.5rem)" }}
-                data-testid="contact-heading"
-              >
-                Ready to grow
-                <br />
-                your business?
-              </h2>
-              <p className="text-base sm:text-xl opacity-90 font-medium mb-8 sm:mb-10 max-w-lg">
-                Let's make marketing easy. Reach out today for a free consultation.
-              </p>
+        {/* ── FAQ ── */}
+        <section className="py-16 sm:py-24 bg-card border-y border-border">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={STAGGER} className="mb-10 text-center">
+              <motion.span variants={FADE_UP} className="text-primary font-bold tracking-[0.2em] text-xs sm:text-sm uppercase mb-3 sm:mb-4 block">06 — FAQ</motion.span>
+              <motion.h2 variants={FADE_UP} className="font-serif font-bold" style={{ fontSize: "clamp(1.75rem, 6vw, 3.75rem)" }}>Common questions.</motion.h2>
+            </motion.div>
 
-              <div className="flex flex-col gap-4 sm:gap-6">
-                <a
-                  href="mailto:hello@shohozmark.com"
-                  className="flex items-center gap-3 sm:gap-4 text-base sm:text-xl font-bold hover:translate-x-2 transition-transform w-fit"
-                  data-testid="contact-email"
-                >
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-black text-primary rounded-full flex items-center justify-center shrink-0">
-                    <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                  hello@shohozmark.com
-                </a>
-                <div className="flex items-center gap-3 sm:gap-4 text-base sm:text-xl font-bold">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-black text-primary rounded-full flex items-center justify-center shrink-0">
-                    <MapPin className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                  Rajshahi, Bangladesh
-                </div>
+            <Accordion type="single" collapsible className="w-full">
+              {[
+                { q: "How much do your services cost?", a: "We offer flexible packages starting from ৳5,000/month. Every business is different, so we build custom proposals. Contact us for a free consultation and quote." },
+                { q: "Do I need to sign a long-term contract?", a: "No. We work on monthly agreements with no lock-in. You can pause or cancel any service with 30 days' notice." },
+                { q: "How quickly can you start?", a: "We can onboard new clients within 3–5 business days. For urgent campaigns, we offer expedited onboarding." },
+                { q: "Do you work with businesses outside Rajshahi?", a: "Yes. While we specialise in Rajshahi and the greater Rajshahi division, we work with businesses across Bangladesh." },
+                { q: "Can I see results before committing to a package?", a: "Yes. We offer a free audit for your social media or SEO which gives you a clear picture of opportunities before you invest." },
+                { q: "What makes ShohozMark different from other agencies?", a: "We are a local agency that deeply understands the Rajshahi market. We don't use templates — every strategy is custom-built for your business and audience." }
+              ].map((faq, i) => (
+                <AccordionItem key={i} value={`faq-${i}`} className="border-border">
+                  <AccordionTrigger className="font-serif text-lg text-left hover:text-primary transition-colors data-[state=open]:text-primary border-l-2 border-transparent data-[state=open]:border-primary pl-4">{faq.q}</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground text-base leading-relaxed pl-4 pb-6">{faq.a}</AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </section>
+
+        {/* ── SERVICE AREA ── */}
+        <section className="py-16 bg-background">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+            <span className="text-primary font-bold tracking-[0.2em] text-xs uppercase mb-3 block">Service Areas</span>
+            <h2 className="font-serif text-3xl font-bold mb-6">Local Expertise Across Rajshahi</h2>
+            <p className="text-muted-foreground text-lg mb-8">We proudly serve businesses across the greater Rajshahi area, including Rajpara, Boalia, Motihar, and Shah Makhdum upazilas. Our local presence means we understand the market dynamics and consumer behaviour specific to our city.</p>
+            <div className="flex flex-wrap justify-center gap-3">
+              {["Restaurant & Food", "Real Estate", "Retail & Fashion", "Healthcare", "Education", "Beauty & Wellness"].map(ind => (
+                <span key={ind} className="px-4 py-2 bg-card border border-border rounded-full text-sm font-medium">{ind}</span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── FROM THE BLOG ── */}
+        <section className="py-16 sm:py-24 border-t border-border bg-card">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-12">
+              <div>
+                <span className="text-primary font-bold tracking-[0.2em] text-xs uppercase mb-3 block">07 — From the Blog</span>
+                <h2 className="font-serif text-3xl font-bold">Marketing insights for local businesses.</h2>
               </div>
+              <Link href="/blog" className="text-primary font-bold hover:underline shrink-0">View All Posts →</Link>
             </div>
 
-            <div className="w-full lg:w-1/2 max-w-md bg-black p-6 sm:p-10 rounded-sm border border-white/10 shadow-2xl">
-              <h3 className="font-serif text-xl sm:text-2xl text-white font-bold mb-5 sm:mb-6">
-                Send us a message
-              </h3>
-              <form className="flex flex-col gap-3 sm:gap-4" onSubmit={(e) => e.preventDefault()}>
-                <input
-                  type="text"
-                  placeholder="Name"
-                  className="bg-white/5 border border-white/10 p-3.5 sm:p-4 rounded-sm text-white text-sm sm:text-base placeholder:text-white/40 focus:outline-none focus:border-primary transition-colors"
-                  data-testid="contact-input-name"
-                />
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="bg-white/5 border border-white/10 p-3.5 sm:p-4 rounded-sm text-white text-sm sm:text-base placeholder:text-white/40 focus:outline-none focus:border-primary transition-colors"
-                  data-testid="contact-input-email"
-                />
-                <textarea
-                  placeholder="Tell us about your business"
-                  rows={4}
-                  className="bg-white/5 border border-white/10 p-3.5 sm:p-4 rounded-sm text-white text-sm sm:text-base placeholder:text-white/40 focus:outline-none focus:border-primary transition-colors resize-none"
-                  data-testid="contact-input-message"
-                />
-                <button
-                  type="submit"
-                  className="bg-primary text-black font-bold py-3.5 sm:py-4 rounded-sm hover:bg-white transition-colors mt-1"
-                  data-testid="contact-submit"
-                >
-                  Submit Inquiry
-                </button>
-              </form>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {blogPosts.map(post => (
+                <Link key={post.id} href={`/blog/${post.slug}`} className="bg-background border border-border rounded-sm p-6 sm:p-8 hover:border-primary transition-colors group flex flex-col">
+                  <span className="text-xs font-bold px-2 py-1 bg-muted rounded-sm text-muted-foreground w-fit mb-4">{post.category}</span>
+                  <h3 className="font-serif text-2xl font-bold mb-3 group-hover:text-primary transition-colors">{post.title}</h3>
+                  <p className="text-muted-foreground mb-6 flex-1">{post.excerpt}</p>
+                  <div className="flex items-center justify-between mt-auto pt-4 border-t border-border">
+                    <div className="text-xs text-muted-foreground">
+                      <span className="font-bold text-foreground">{post.author}</span> • {post.readTime} min read
+                    </div>
+                    <span className="text-primary text-sm font-bold flex items-center gap-1 group-hover:gap-2 transition-all">Read More <ArrowRight className="w-3 h-3" /></span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── CONTACT / CTA ── */}
+        <section id="contact" className="py-16 sm:py-24 md:py-32 bg-primary text-primary-foreground relative overflow-hidden">
+          <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle at center, #000 2px, transparent 2px)", backgroundSize: "32px 32px" }} />
+          
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 items-center">
+              <div>
+                <h2 className="font-serif font-extrabold text-black mb-6" style={{ fontSize: "clamp(2rem, 6vw, 4rem)", lineHeight: 1.1 }}>Let's talk about growing your business.</h2>
+                <p className="text-black/80 text-lg sm:text-xl mb-8 sm:mb-10 max-w-md">Drop us a line or visit our office. We'd love to hear about what you're building in Rajshahi.</p>
+                <div className="space-y-4 sm:space-y-6 text-black font-medium">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-black/10 rounded-full flex items-center justify-center shrink-0"><MapPin className="w-5 h-5 sm:w-6 sm:h-6" /></div>
+                    <span className="text-sm sm:text-base">Rajshahi City, Bangladesh</span>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-black/10 rounded-full flex items-center justify-center shrink-0"><Mail className="w-5 h-5 sm:w-6 sm:h-6" /></div>
+                    <span className="text-sm sm:text-base">hello@shohozmark.com</span>
+                  </div>
+                </div>
+                <div className="mt-10 pt-10 border-t border-black/10 flex items-center gap-6">
+                  <span className="text-black font-bold uppercase tracking-wider text-sm">Follow Us</span>
+                  <a href="#" className="w-10 h-10 bg-black/10 hover:bg-black hover:text-primary transition-colors rounded-full flex items-center justify-center"><Instagram className="w-5 h-5" /></a>
+                  <a href="#" className="w-10 h-10 bg-black/10 hover:bg-black hover:text-primary transition-colors rounded-full flex items-center justify-center"><Facebook className="w-5 h-5" /></a>
+                </div>
+              </div>
+
+              <div className="bg-background text-foreground p-6 sm:p-10 rounded-sm shadow-2xl">
+                <h3 className="font-serif text-2xl font-bold mb-6">Send a message</h3>
+                <form className="space-y-4 sm:space-y-5" onSubmit={(e) => e.preventDefault()}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                    <div className="space-y-1.5 sm:space-y-2">
+                      <label className="text-xs sm:text-sm font-medium text-muted-foreground">Name</label>
+                      <input type="text" className="w-full bg-card border border-input rounded-sm px-3 sm:px-4 py-2.5 sm:py-3 text-sm focus:outline-none focus:border-primary transition-colors" placeholder="John Doe" />
+                    </div>
+                    <div className="space-y-1.5 sm:space-y-2">
+                      <label className="text-xs sm:text-sm font-medium text-muted-foreground">Phone</label>
+                      <input type="tel" className="w-full bg-card border border-input rounded-sm px-3 sm:px-4 py-2.5 sm:py-3 text-sm focus:outline-none focus:border-primary transition-colors" placeholder="+880 1..." />
+                    </div>
+                  </div>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <label className="text-xs sm:text-sm font-medium text-muted-foreground">Message</label>
+                    <textarea className="w-full bg-card border border-input rounded-sm px-3 sm:px-4 py-2.5 sm:py-3 text-sm min-h-[100px] sm:min-h-[120px] focus:outline-none focus:border-primary transition-colors resize-none" placeholder="Tell us about your project..."></textarea>
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-4 pt-2">
+                    <button type="submit" className="w-full bg-primary text-black font-bold py-3 sm:py-3.5 rounded-sm hover:bg-primary/90 transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                      Send Message
+                    </button>
+                    <ConsultationModal>
+                      <button type="button" className="w-full bg-card border border-border text-foreground font-bold py-3 sm:py-3.5 rounded-sm hover:border-primary transition-colors">
+                        Book a Discovery Call
+                      </button>
+                    </ConsultationModal>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </section>
       </main>
 
-      {/* ── FOOTER ── */}
-      <footer className="bg-background border-t border-border pt-12 sm:pt-20 pb-8 sm:pb-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12 mb-10 sm:mb-16">
-            <div className="sm:col-span-2">
-              <img src={whiteLogo} alt="ShohozMark" className="h-8 sm:h-10 w-auto mb-4 sm:mb-6" />
-              <p className="text-muted-foreground text-sm sm:text-base max-w-sm mb-6 sm:mb-8">
-                Marketing Made Easy. The leading creative agency for local businesses in Rajshahi.
-              </p>
-              <div className="flex gap-3 sm:gap-4">
-                <a
-                  href="#"
-                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center text-foreground hover:border-primary hover:text-primary transition-colors"
-                  aria-label="Facebook"
-                  data-testid="footer-facebook"
-                >
-                  <Facebook className="w-4 h-4" />
-                </a>
-                <a
-                  href="#"
-                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center text-foreground hover:border-primary hover:text-primary transition-colors"
-                  aria-label="Instagram"
-                  data-testid="footer-instagram"
-                >
-                  <Instagram className="w-4 h-4" />
-                </a>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="font-serif font-bold text-base sm:text-lg mb-4 sm:mb-6">Navigation</h4>
-              <ul className="flex flex-col gap-3 sm:gap-4 text-muted-foreground text-sm sm:text-base">
-                {NAV_LINKS.map((link) => (
-                  <li key={link.id}>
-                    <button
-                      onClick={() => scrollTo(link.id)}
-                      className="hover:text-primary transition-colors"
-                      data-testid={`footer-nav-${link.id}`}
-                    >
-                      {link.label}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-serif font-bold text-base sm:text-lg mb-4 sm:mb-6">Contact</h4>
-              <ul className="flex flex-col gap-3 sm:gap-4 text-muted-foreground text-sm sm:text-base">
-                <li>hello@shohozmark.com</li>
-                <li>Rajshahi, Bangladesh</li>
-                <li>shohozmark.com</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="pt-6 sm:pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} ShohozMark. All rights reserved.</p>
-            <div className="flex items-center gap-2 font-serif">
-              <img src={greenLogo} alt="ShohozMark icon" className="w-4 h-4" />
-              Marketing Made Easy.
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

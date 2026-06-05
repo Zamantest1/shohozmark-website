@@ -1,0 +1,2 @@
+- [ShohozMark site structure](shohozmark-site.md) — multi-page React+Vite site at artifacts/shohozmark; brand rules, data layer, routing.
+- [Syne 800 font overflow rule](syne-font-sizing.md) — Syne 800 uppercase glyphs ~12% wider than typical; use tight clamp values for hero headings.
