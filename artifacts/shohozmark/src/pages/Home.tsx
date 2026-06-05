@@ -151,25 +151,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── TAGLINE MARQUEE ── */}
-        <div className="overflow-hidden bg-primary py-3.5 sm:py-4 relative">
-          <motion.div
-            className="flex items-center gap-6 sm:gap-10 whitespace-nowrap"
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{ repeat: Infinity, duration: 28, ease: "linear" }}
-          >
-            {[
-              "SHOHOZ-E GROW KORO", "MARKETING MADE EASY", "BIG AGENCY RESULTS. LOCAL PRICES", "YOUR BRAND. OUR MISSION",
-              "SHOHOZ-E GROW KORO", "MARKETING MADE EASY", "BIG AGENCY RESULTS. LOCAL PRICES", "YOUR BRAND. OUR MISSION",
-            ].map((text, i) => (
-              <React.Fragment key={i}>
-                <span className="font-serif font-black text-black uppercase tracking-tight shrink-0 text-sm sm:text-base md:text-lg">{text}</span>
-                <span className="text-black/30 font-black text-lg sm:text-xl shrink-0">&times;</span>
-              </React.Fragment>
-            ))}
-          </motion.div>
-        </div>
-
         {/* ── SERVICES ── */}
         <section id="services" className="py-16 sm:py-24 md:py-28 bg-background border-b border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -311,6 +292,25 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* ── TAGLINE MARQUEE ── */}
+        <div className="overflow-hidden bg-primary py-3.5 sm:py-4">
+          <motion.div
+            className="flex items-center gap-6 sm:gap-10 whitespace-nowrap"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ repeat: Infinity, duration: 28, ease: "linear" }}
+          >
+            {[
+              "SHOHOZ-E GROW KORO", "MARKETING MADE EASY", "BIG AGENCY RESULTS. LOCAL PRICES", "YOUR BRAND. OUR MISSION",
+              "SHOHOZ-E GROW KORO", "MARKETING MADE EASY", "BIG AGENCY RESULTS. LOCAL PRICES", "YOUR BRAND. OUR MISSION",
+            ].map((text, i) => (
+              <React.Fragment key={i}>
+                <span className="font-serif font-black text-black uppercase tracking-tight shrink-0 text-sm sm:text-base md:text-lg">{text}</span>
+                <span className="text-black/30 font-black text-lg sm:text-xl shrink-0">&times;</span>
+              </React.Fragment>
+            ))}
+          </motion.div>
+        </div>
 
         {/* ── PROCESS ── */}
         <section id="process" className="py-16 sm:py-24 md:py-28 border-b border-border">
