@@ -77,6 +77,7 @@ export function Navbar() {
               )}
             </AnimatePresence>
           </div>
+          <Link href="/about" className={`hover:text-primary transition-colors ${isActive('/about') ? 'text-primary' : 'text-foreground'}`}>About</Link>
           <Link href="/portfolio" className={`hover:text-primary transition-colors ${isActive('/portfolio') ? 'text-primary' : 'text-foreground'}`}>Portfolio</Link>
           <Link href="/team" className={`hover:text-primary transition-colors ${isActive('/team') ? 'text-primary' : 'text-foreground'}`}>Team</Link>
           <Link href="/blog" className={`hover:text-primary transition-colors ${isActive('/blog') ? 'text-primary' : 'text-foreground'}`}>Blog</Link>
@@ -121,6 +122,9 @@ export function Navbar() {
                   </Link>
                 ))}
               </div>
+              <Link href="/about" onClick={closeMobile} className="w-full text-left py-3 text-base font-medium hover:text-primary transition-colors border-b border-border/40">
+                About
+              </Link>
               <Link href="/portfolio" onClick={closeMobile} className="w-full text-left py-3 text-base font-medium hover:text-primary transition-colors border-b border-border/40">
                 Portfolio
               </Link>
