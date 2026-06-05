@@ -7,7 +7,6 @@ import { ConsultationModal } from "@/components/ConsultationModal";
 import { useSEO } from "@/lib/seo";
 import { TEAM_MEMBERS } from "@/data/team";
 import greenLogo from "@assets/Green_1780696036870.png";
-import yellowLogo from "@assets/Yellow_1780696036871.png";
 
 const FADE_UP = {
   hidden: { opacity: 0, y: 30 },
@@ -181,7 +180,6 @@ export default function About() {
                 <p className="text-muted-foreground text-base leading-relaxed mb-6">
                   We don't try to serve everyone. We've deep-dived into three industries that define local commerce in Rajshahi — and we know their customers, challenges, and opportunities inside-out.
                 </p>
-                <img src={yellowLogo} alt="ShohozMark" className="w-20 opacity-70" />
               </motion.div>
 
               <div className="lg:col-span-3 flex flex-col gap-4">
