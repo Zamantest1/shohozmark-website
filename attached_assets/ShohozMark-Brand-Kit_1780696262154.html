@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShohozMark — Brand Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #00C853;
+    --green-dark: #00952E;
+    --green-light: #B9F6CA;
+    --black: #0A0A0A;
+    --white: #FAFAFA;
+    --gray: #1A1A1A;
+    --gray-mid: #2E2E2E;
+    --gray-light: #888;
+    --accent: #FFD600;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ===== PAGE HEADER ===== */
+  .page-header {
+    text-align: center;
+    padding: 80px 40px 60px;
+    border-bottom: 1px solid #1e1e1e;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(0,200,83,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .page-header .label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+  }
+  .page-header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 800;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .page-header h1 span { color: var(--green); }
+  .page-header p {
+    color: var(--gray-light);
+    font-size: 15px;
+    font-weight: 300;
+  }
+
+  /* ===== SECTION ===== */
+  .section {
+    padding: 80px 60px;
+    border-bottom: 1px solid #1a1a1a;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 700;
+    margin-bottom: 48px;
+    letter-spacing: -1px;
+  }
+
+  /* ===== LOGO SECTION ===== */
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .logo-card {
+    border-radius: 16px;
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .logo-card.dark { background: var(--gray); border: 1px solid #2e2e2e; }
+  .logo-card.light { background: var(--white); }
+  .logo-card.green { background: var(--green); }
+  .logo-card .card-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-top: 8px;
+  }
+  .logo-card.light .card-label { color: var(--black); }
+  .logo-card.green .card-label { color: var(--black); }
+
+  /* THE ACTUAL LOGO */
+  .logo-mark {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .logo-icon {
+    width: 52px;
+    height: 52px;
+    position: relative;
+  }
+  .logo-icon svg { width: 100%; height: 100%; }
+  .logo-text-wrap { display: flex; flex-direction: column; line-height: 1; }
+  .logo-shohoz {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    letter-spacing: -1px;
+  }
+  .logo-mark-text {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-top: 2px;
+  }
+  .logo-card.dark .logo-shohoz { color: var(--white); }
+  .logo-card.dark .logo-icon svg .icon-bg { fill: var(--green); }
+  .logo-card.light .logo-shohoz { color: var(--black); }
+  .logo-card.light .logo-mark-text { color: var(--black); }
+  .logo-card.green .logo-shohoz { color: var(--black); }
+  .logo-card.green .logo-mark-text { color: var(--black); }
+  .logo-card.green .logo-icon svg .icon-bg { fill: var(--black); }
+  .logo-card.green .logo-icon svg .icon-arrow { fill: var(--green); }
+
+  /* Icon only card */
+  .logo-card.icon-only-card { justify-content: center; }
+  .logo-icon-large {
+    width: 80px; height: 80px;
+  }
+  .logo-icon-large svg { width: 100%; height: 100%; }
+
+  /* ===== COLOR SECTION ===== */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+  }
+  .color-swatch {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .swatch-block {
+    height: 120px;
+    width: 100%;
+  }
+  .swatch-info {
+    background: var(--gray);
+    padding: 16px;
+    border: 1px solid #2e2e2e;
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+  }
+  .swatch-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+  .swatch-hex {
+    font-size: 11px;
+    color: var(--gray-light);
+    letter-spacing: 1px;
+    font-family: monospace;
+  }
+  .swatch-role {
+    font-size: 10px;
+    color: var(--gray-light);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  /* ===== TYPOGRAPHY ===== */
+  .type-grid { display: flex; flex-direction: column; gap: 32px; }
+  .type-row {
+    background: var(--gray);
+    border: 1px solid #2e2e2e;
+    border-radius: 16px;
+    padding: 40px;
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+  }
+  .type-meta { min-width: 160px; }
+  .type-meta .font-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--green);
+    margin-bottom: 4px;
+  }
+  .type-meta .font-use {
+    font-size: 11px;
+    color: var(--gray-light);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .type-sample { flex: 1; }
+  .type-display {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -2px;
+    color: var(--white);
+  }
+  .type-body-sample {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--gray-light);
+    line-height: 1.6;
+  }
+
+  /* ===== TAGLINES ===== */
+  .tagline-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .tagline-card {
+    background: var(--gray);
+    border: 1px solid #2e2e2e;
+    border-radius: 16px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .tagline-card:hover { border-color: var(--green); }
+  .tagline-card::before {
+    content: '"';
+    position: absolute;
+    top: -10px; left: 20px;
+    font-family: 'Syne', sans-serif;
+    font-size: 120px;
+    color: var(--green);
+    opacity: 0.08;
+    line-height: 1;
+  }
+  .tagline-card .tagline-lang {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 12px;
+  }
+  .tagline-card .tagline-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 12px;
+  }
+  .tagline-card .tagline-meaning {
+    font-size: 13px;
+    color: var(--gray-light);
+    font-style: italic;
+  }
+
+  /* ===== BRAND VALUES ===== */
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .value-card {
+    background: var(--gray);
+    border: 1px solid #2e2e2e;
+    border-radius: 16px;
+    padding: 32px 28px;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .value-card:hover { transform: translateY(-4px); border-color: var(--green); }
+  .value-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--green);
+    opacity: 0.3;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .value-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .value-desc {
+    font-size: 13px;
+    color: var(--gray-light);
+    line-height: 1.6;
+  }
+
+  /* ===== BUSINESS CARD ===== */
+  .card-preview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 600px) { .card-preview { grid-template-columns: 1fr; } }
+  .biz-card {
+    border-radius: 20px;
+    padding: 36px;
+    aspect-ratio: 1.75;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .biz-card.front { background: var(--black); border: 1px solid #2e2e2e; }
+  .biz-card.back { background: var(--green); }
+  .biz-card::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; right: -40px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .biz-card.back::after { background: rgba(0,0,0,0.08); }
+  .biz-logo-small {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .biz-logo-small svg { width: 28px; height: 28px; }
+  .biz-logo-small span {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: -0.5px;
+  }
+  .biz-card.back .biz-logo-small span { color: var(--black); }
+  .biz-info .name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+  .biz-info .role {
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .biz-info .contact {
+    font-size: 11px;
+    color: var(--gray-light);
+    line-height: 1.8;
+  }
+  .biz-card.back .back-tagline {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: var(--black);
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+  }
+  .biz-card.back .back-bottom {
+    font-size: 11px;
+    color: rgba(0,0,0,0.5);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ===== SOCIAL MEDIA ===== */
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .social-card {
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+  }
+  .social-banner {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .social-banner.fb { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border-bottom: 3px solid var(--green); }
+  .social-banner.ig { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border-bottom: 3px solid var(--green); }
+  .social-banner.li { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border-bottom: 3px solid var(--green); }
+  .social-name-display {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--white);
+    letter-spacing: -0.5px;
+  }
+  .social-name-display span { color: var(--green); }
+  .social-info {
+    background: var(--gray);
+    border: 1px solid #2e2e2e;
+    border-top: none;
+    padding: 16px;
+    border-radius: 0 0 16px 16px;
+  }
+  .social-platform {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 4px;
+  }
+  .social-handle {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .social-bio {
+    font-size: 11px;
+    color: var(--gray-light);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  /* ===== EMAIL SIGNATURE ===== */
+  .email-sig {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 32px;
+    color: var(--black);
+    max-width: 500px;
+  }
+  .sig-top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--green);
+    margin-bottom: 20px;
+  }
+  .sig-avatar {
+    width: 52px; height: 52px;
+    background: var(--green);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--black);
+  }
+  .sig-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--black);
+  }
+  .sig-role {
+    font-size: 11px;
+    color: var(--green-dark);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .sig-details { display: flex; flex-direction: column; gap: 6px; }
+  .sig-detail {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: #444;
+  }
+  .sig-detail-icon {
+    width: 18px; height: 18px;
+    background: var(--green);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+  .sig-brand {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sig-brand-icon { width: 20px; height: 20px; }
+  .sig-brand-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--black);
+  }
+  .sig-brand-name span { color: var(--green); }
+  .sig-brand-tag {
+    font-size: 10px;
+    color: #888;
+    margin-left: auto;
+    letter-spacing: 1px;
+  }
+
+  /* ===== DO / DON'T ===== */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 600px) { .rules-grid { grid-template-columns: 1fr; } }
+  .rules-col { display: flex; flex-direction: column; gap: 12px; }
+  .rules-col-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin-bottom: 4px;
+  }
+  .rules-col-title.do { background: rgba(0,200,83,0.15); color: var(--green); }
+  .rules-col-title.dont { background: rgba(255,50,50,0.1); color: #ff5252; }
+  .rule-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--gray-light);
+    line-height: 1.5;
+  }
+  .rule-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .do .rule-dot { background: var(--green); }
+  .dont .rule-dot { background: #ff5252; }
+
+  /* ===== FOOTER ===== */
+  .brand-footer {
+    text-align: center;
+    padding: 60px 40px;
+    border-top: 1px solid #1a1a1a;
+  }
+  .brand-footer .big-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(40px, 8vw, 100px);
+    font-weight: 800;
+    letter-spacing: -3px;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .brand-footer .big-logo span { color: var(--green); }
+  .brand-footer p {
+    font-size: 13px;
+    color: var(--gray-light);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section { animation: fadeUp 0.5s ease both; }
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="label">Official Brand Guidelines</div>
+  <h1>Shohoz<span>Mark</span></h1>
+  <p>Affordable Marketing for Local Brands — Brand Identity Kit 2025</p>
+</div>
+
+<!-- 1. LOGO -->
+<div class="section">
+  <div class="section-label">01 — Logo System</div>
+  <div class="section-title">The ShohozMark Mark</div>
+  <div class="logo-grid">
+
+    <!-- Dark BG -->
+    <div class="logo-card dark">
+      <div class="logo-mark">
+        <div class="logo-icon">
+          <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect class="icon-bg" width="52" height="52" rx="14" fill="#00C853"/>
+            <path class="icon-arrow" d="M14 32 L26 18 L38 32" stroke="#0A0A0A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M20 38 L32 38" stroke="#0A0A0A" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="logo-text-wrap">
+          <div class="logo-shohoz">ShohozMark</div>
+          <div class="logo-mark-text">Marketing Agency</div>
+        </div>
+      </div>
+      <div class="card-label">On Dark Background</div>
+    </div>
+
+    <!-- Light BG -->
+    <div class="logo-card light">
+      <div class="logo-mark">
+        <div class="logo-icon">
+          <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="52" height="52" rx="14" fill="#00C853"/>
+            <path d="M14 32 L26 18 L38 32" stroke="#0A0A0A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M20 38 L32 38" stroke="#0A0A0A" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="logo-text-wrap">
+          <div class="logo-shohoz">ShohozMark</div>
+          <div class="logo-mark-text">Marketing Agency</div>
+        </div>
+      </div>
+      <div class="card-label" style="color:#000">On Light Background</div>
+    </div>
+
+    <!-- Green BG -->
+    <div class="logo-card green">
+      <div class="logo-mark">
+        <div class="logo-icon">
+          <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="52" height="52" rx="14" fill="#0A0A0A"/>
+            <path d="M14 32 L26 18 L38 32" stroke="#00C853" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M20 38 L32 38" stroke="#00C853" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="logo-text-wrap">
+          <div class="logo-shohoz">ShohozMark</div>
+          <div class="logo-mark-text">Marketing Agency</div>
+        </div>
+      </div>
+      <div class="card-label">On Brand Color</div>
+    </div>
+
+    <!-- Icon Only -->
+    <div class="logo-card dark icon-only-card">
+      <div class="logo-icon-large">
+        <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="52" height="52" rx="14" fill="#00C853"/>
+          <path d="M14 32 L26 18 L38 32" stroke="#0A0A0A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M20 38 L32 38" stroke="#0A0A0A" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="card-label">Icon Only (Avatar Use)</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 2. COLORS -->
+<div class="section">
+  <div class="section-label">02 — Color Palette</div>
+  <div class="section-title">Brand Colors</div>
+  <div class="color-grid">
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#00C853;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Growth Green</div>
+        <div class="swatch-hex">#00C853</div>
+        <div class="swatch-role">Primary</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#0A0A0A;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Deep Black</div>
+        <div class="swatch-hex">#0A0A0A</div>
+        <div class="swatch-role">Background</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#FAFAFA;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Pure White</div>
+        <div class="swatch-hex">#FAFAFA</div>
+        <div class="swatch-role">Light BG</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#1A1A1A;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Card Gray</div>
+        <div class="swatch-hex">#1A1A1A</div>
+        <div class="swatch-role">Surface</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#B9F6CA;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Mint Light</div>
+        <div class="swatch-hex">#B9F6CA</div>
+        <div class="swatch-role">Accent Tint</div>
+      </div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-block" style="background:#FFD600;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Spark Yellow</div>
+        <div class="swatch-hex">#FFD600</div>
+        <div class="swatch-role">Highlight</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. TYPOGRAPHY -->
+<div class="section">
+  <div class="section-label">03 — Typography</div>
+  <div class="section-title">Brand Fonts</div>
+  <div class="type-grid">
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="font-name">Syne</div>
+        <div class="font-use">Headings / Logo</div>
+      </div>
+      <div class="type-sample">
+        <div class="type-display">ShohozMark</div>
+      </div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="font-name">DM Sans</div>
+        <div class="font-use">Body / UI Text</div>
+      </div>
+      <div class="type-sample">
+        <div class="type-body-sample">Affordable marketing for local restaurants, real estate, and every brand that deserves to grow.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. TAGLINES -->
+<div class="section">
+  <div class="section-label">04 — Taglines</div>
+  <div class="section-title">Brand Voice</div>
+  <div class="tagline-grid">
+    <div class="tagline-card">
+      <div class="tagline-lang">English</div>
+      <div class="tagline-text">Marketing Made Easy.</div>
+      <div class="tagline-meaning">Simple, direct, affordable — just like Shohoz means.</div>
+    </div>
+    <div class="tagline-card">
+      <div class="tagline-lang">Bangla Inspired</div>
+      <div class="tagline-text">Shohoz-e Grow Koro.</div>
+      <div class="tagline-meaning">"Grow easily" — speaks directly to local brands.</div>
+    </div>
+    <div class="tagline-card">
+      <div class="tagline-lang">Positioning</div>
+      <div class="tagline-text">Big Agency Results. Local Prices.</div>
+      <div class="tagline-meaning">Your core promise — affordable without compromise.</div>
+    </div>
+    <div class="tagline-card">
+      <div class="tagline-lang">Short Form</div>
+      <div class="tagline-text">Your Brand. Our Mission.</div>
+      <div class="tagline-meaning">Perfect for social media bios and cards.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. BRAND VALUES -->
+<div class="section">
+  <div class="section-label">05 — Brand Values</div>
+  <div class="section-title">What We Stand For</div>
+  <div class="values-grid">
+    <div class="value-card">
+      <div class="value-number">01</div>
+      <div class="value-title">Affordable</div>
+      <div class="value-desc">Premium results at prices local businesses can actually afford. No hidden fees.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-number">02</div>
+      <div class="value-title">Local First</div>
+      <div class="value-desc">We understand local markets. Restaurants, real estate, retail — we speak their language.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-number">03</div>
+      <div class="value-title">Creative</div>
+      <div class="value-desc">Bold designs and fresh campaigns that make local brands stand out from the crowd.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-number">04</div>
+      <div class="value-title">Trustworthy</div>
+      <div class="value-desc">We deliver what we promise. Transparent pricing, honest communication, real results.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. BUSINESS CARD -->
+<div class="section">
+  <div class="section-label">06 — Business Card</div>
+  <div class="section-title">Card Design</div>
+  <div class="card-preview">
+    <!-- Front -->
+    <div class="biz-card front">
+      <div class="biz-logo-small">
+        <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="52" height="52" rx="14" fill="#00C853"/>
+          <path d="M14 32 L26 18 L38 32" stroke="#0A0A0A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M20 38 L32 38" stroke="#0A0A0A" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+        <span style="color:white; font-family:'Syne',sans-serif; font-weight:800;">ShohozMark</span>
+      </div>
+      <div class="biz-info">
+        <div class="name">Your Name</div>
+        <div class="role">Founder & Marketing Lead</div>
+        <div class="contact">
+          📞 +880 XXXX XXXXXX<br>
+          ✉ hello@shohozmark.com<br>
+          🌐 shohozmark.com
+        </div>
+      </div>
+    </div>
+    <!-- Back -->
+    <div class="biz-card back">
+      <div class="biz-logo-small">
+        <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="52" height="52" rx="14" fill="#0A0A0A"/>
+          <path d="M14 32 L26 18 L38 32" stroke="#00C853" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M20 38 L32 38" stroke="#00C853" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+        <span>ShohozMark</span>
+      </div>
+      <div class="back-tagline">Marketing Made Easy.</div>
+      <div class="back-bottom">Rajshahi, Bangladesh</div>
+    </div>
+  </div>
+</div>
+
+<!-- 7. SOCIAL MEDIA -->
+<div class="section">
+  <div class="section-label">07 — Social Media</div>
+  <div class="section-title">Platform Handles & Bios</div>
+  <div class="social-grid">
+    <div class="social-card">
+      <div class="social-banner fb">
+        <div class="social-name-display">Shohoz<span>Mark</span></div>
+      </div>
+      <div class="social-info">
+        <div class="social-platform">Facebook</div>
+        <div class="social-handle">@ShohozMark</div>
+        <div class="social-bio">📈 Affordable marketing for local brands | Rajshahi 🇧🇩 | Restaurants • Real Estate • Retail</div>
+      </div>
+    </div>
+    <div class="social-card">
+      <div class="social-banner ig">
+        <div class="social-name-display">Shohoz<span>Mark</span></div>
+      </div>
+      <div class="social-info">
+        <div class="social-platform">Instagram</div>
+        <div class="social-handle">@shohozmark</div>
+        <div class="social-bio">🎯 Marketing Made Easy | Local brands, big results | Design • Content • Strategy</div>
+      </div>
+    </div>
+    <div class="social-card">
+      <div class="social-banner li">
+        <div class="social-name-display">Shohoz<span>Mark</span></div>
+      </div>
+      <div class="social-info">
+        <div class="social-platform">LinkedIn</div>
+        <div class="social-handle">ShohozMark Agency</div>
+        <div class="social-bio">Affordable digital marketing & design agency helping local businesses grow in Bangladesh.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 8. EMAIL SIGNATURE -->
+<div class="section">
+  <div class="section-label">08 — Email Signature</div>
+  <div class="section-title">Professional Signature</div>
+  <div class="email-sig">
+    <div class="sig-top">
+      <div class="sig-avatar">SM</div>
+      <div>
+        <div class="sig-name">Your Name</div>
+        <div class="sig-role">Founder — ShohozMark</div>
+      </div>
+    </div>
+    <div class="sig-details">
+      <div class="sig-detail">
+        <div class="sig-detail-icon">📞</div>
+        <span>+880 XXXX XXXXXX</span>
+      </div>
+      <div class="sig-detail">
+        <div class="sig-detail-icon">✉</div>
+        <span>hello@shohozmark.com</span>
+      </div>
+      <div class="sig-detail">
+        <div class="sig-detail-icon">🌐</div>
+        <span>www.shohozmark.com</span>
+      </div>
+      <div class="sig-detail">
+        <div class="sig-detail-icon">📍</div>
+        <span>Rajshahi, Bangladesh</span>
+      </div>
+    </div>
+    <div class="sig-brand">
+      <svg class="sig-brand-icon" viewBox="0 0 52 52" fill="none">
+        <rect width="52" height="52" rx="14" fill="#00C853"/>
+        <path d="M14 32 L26 18 L38 32" stroke="#0A0A0A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M20 38 L32 38" stroke="#0A0A0A" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+      <div class="sig-brand-name">Shohoz<span>Mark</span></div>
+      <div class="sig-brand-tag">Marketing Made Easy</div>
+    </div>
+  </div>
+</div>
+
+<!-- 9. BRAND RULES -->
+<div class="section">
+  <div class="section-label">09 — Brand Rules</div>
+  <div class="section-title">Do's & Don'ts</div>
+  <div class="rules-grid">
+    <div class="rules-col">
+      <div class="rules-col-title do">✓ Do</div>
+      <div class="rule-item do"><div class="rule-dot"></div>Always use Growth Green (#00C853) as the primary brand color</div>
+      <div class="rule-item do"><div class="rule-dot"></div>Use Syne font for all headings and logo text</div>
+      <div class="rule-item do"><div class="rule-dot"></div>Keep the logo icon and text together whenever possible</div>
+      <div class="rule-item do"><div class="rule-dot"></div>Maintain clear space around the logo equal to the icon height</div>
+      <div class="rule-item do"><div class="rule-dot"></div>Use the tagline "Marketing Made Easy" consistently</div>
+      <div class="rule-item do"><div class="rule-dot"></div>Keep designs clean and minimal — let the green do the talking</div>
+    </div>
+    <div class="rules-col">
+      <div class="rules-col-title dont">✗ Don't</div>
+      <div class="rule-item dont"><div class="rule-dot"></div>Never stretch or distort the logo</div>
+      <div class="rule-item dont"><div class="rule-dot"></div>Never use low contrast colors that reduce readability</div>
+      <div class="rule-item dont"><div class="rule-dot"></div>Never place logo on busy or cluttered backgrounds</div>
+      <div class="rule-item dont"><div class="rule-dot"></div>Never use random fonts — stick to Syne and DM Sans only</div>
+      <div class="rule-item dont"><div class="rule-dot"></div>Never change the brand green to any other shade</div>
+      <div class="rule-item dont"><div class="rule-dot"></div>Never use the icon without the wordmark in formal documents</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="brand-footer">
+  <div class="big-logo">Shohoz<span>Mark</span></div>
+  <p>Marketing Made Easy — Rajshahi, Bangladesh 🇧🇩</p>
+</div>
+
+</body>
+</html>
