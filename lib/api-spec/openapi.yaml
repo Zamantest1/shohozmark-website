@@ -3,13 +3,24 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: ShohozMark API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: contact
+    description: Contact form submissions
+  - name: team
+    description: Team members
+  - name: portfolio
+    description: Portfolio items
+  - name: testimonials
+    description: Client testimonials
+  - name: blog
+    description: Blog posts
+
 paths:
   /healthz:
     get:
@@ -24,13 +35,355 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /contact:
+    post:
+      operationId: submitContact
+      tags: [contact]
+      summary: Submit a consultation request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactInput"
+      responses:
+        "201":
+          description: Submission received
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactConfirmation"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /team:
+    get:
+      operationId: listTeamMembers
+      tags: [team]
+      summary: List active team members
+      responses:
+        "200":
+          description: Team members list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TeamMember"
+
+  /portfolio:
+    get:
+      operationId: listPortfolioItems
+      tags: [portfolio]
+      summary: List published portfolio items
+      parameters:
+        - in: query
+          name: featured
+          schema:
+            type: boolean
+          description: Filter to featured items only
+        - in: query
+          name: industry
+          schema:
+            type: string
+          description: Filter by industry
+      responses:
+        "200":
+          description: Portfolio items list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PortfolioItem"
+
+  /portfolio/{slug}:
+    get:
+      operationId: getPortfolioItem
+      tags: [portfolio]
+      summary: Get a single portfolio item by slug
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Portfolio item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioItem"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /testimonials:
+    get:
+      operationId: listTestimonials
+      tags: [testimonials]
+      summary: List testimonials
+      parameters:
+        - in: query
+          name: featured
+          schema:
+            type: boolean
+          description: Filter to featured testimonials only
+      responses:
+        "200":
+          description: Testimonials list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Testimonial"
+
+  /blog:
+    get:
+      operationId: listBlogPosts
+      tags: [blog]
+      summary: List published blog posts
+      parameters:
+        - in: query
+          name: category
+          schema:
+            type: string
+          description: Filter by category
+      responses:
+        "200":
+          description: Blog posts list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BlogPostSummary"
+
+  /blog/{slug}:
+    get:
+      operationId: getBlogPost
+      tags: [blog]
+      summary: Get a single blog post by slug
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Blog post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPostDetail"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
 
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+
+    ContactInput:
+      type: object
+      required: [name, email, message]
+      properties:
+        name:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          minLength: 1
+        phone:
+          type: ["string", "null"]
+        businessName:
+          type: ["string", "null"]
+        serviceInterest:
+          type: ["string", "null"]
+        message:
+          type: string
+          minLength: 1
+
+    ContactConfirmation:
+      type: object
+      required: [id, message]
+      properties:
+        id:
+          type: integer
+        message:
+          type: string
+
+    TeamMember:
+      type: object
+      required: [id, name, role, bio, shortBio, initials, skills, orderIndex, isActive]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        role:
+          type: string
+        bio:
+          type: string
+        shortBio:
+          type: string
+        initials:
+          type: string
+        photoUrl:
+          type: ["string", "null"]
+        skills:
+          type: array
+          items:
+            type: string
+        orderIndex:
+          type: integer
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+
+    PortfolioItem:
+      type: object
+      required: [id, title, slug, category, industry, description, client, result, featured, published]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        slug:
+          type: string
+        category:
+          type: string
+        industry:
+          type: string
+        description:
+          type: string
+        client:
+          type: string
+        result:
+          type: string
+        coverImage:
+          type: ["string", "null"]
+        images:
+          type: array
+          items:
+            type: string
+        testimonialQuote:
+          type: ["string", "null"]
+        testimonialAuthor:
+          type: ["string", "null"]
+        featured:
+          type: boolean
+        published:
+          type: boolean
+        publishedAt:
+          type: string
+
+    Testimonial:
+      type: object
+      required: [id, name, role, company, initials, quote, serviceUsed, rating, featured]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        role:
+          type: string
+        company:
+          type: string
+        initials:
+          type: string
+        quote:
+          type: string
+        serviceUsed:
+          type: string
+        rating:
+          type: integer
+        featured:
+          type: boolean
+
+    BlogPostSummary:
+      type: object
+      required: [id, title, slug, excerpt, author, category, tags, readTime, published]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        slug:
+          type: string
+        excerpt:
+          type: string
+        author:
+          type: string
+        category:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        readTime:
+          type: integer
+        coverImage:
+          type: ["string", "null"]
+        published:
+          type: boolean
+        publishedAt:
+          type: ["string", "null"]
+
+    BlogPostDetail:
+      type: object
+      required: [id, title, slug, excerpt, content, author, category, tags, readTime, published]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        slug:
+          type: string
+        excerpt:
+          type: string
+        content:
+          type: string
+        author:
+          type: string
+        category:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        readTime:
+          type: integer
+        coverImage:
+          type: ["string", "null"]
+        published:
+          type: boolean
+        publishedAt:
+          type: ["string", "null"]
