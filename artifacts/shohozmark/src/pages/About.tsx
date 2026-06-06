@@ -101,11 +101,11 @@ export default function About() {
                   </blockquote>
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center shrink-0">
-                      <span className="font-serif font-bold text-primary text-sm">SA</span>
+                      <span className="font-serif font-bold text-primary text-sm">SU</span>
                     </div>
                     <div>
-                      <div className="font-bold text-sm">Sabbir Ahmed</div>
-                      <div className="text-xs text-muted-foreground">Founder & Creative Director</div>
+                      <div className="font-bold text-sm">Shomik Ujzaman</div>
+                      <div className="text-xs text-muted-foreground">Creative Director & Head of Growth</div>
                     </div>
                   </div>
                   {/* Decorative corner */}
