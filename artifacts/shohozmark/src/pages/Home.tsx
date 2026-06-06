@@ -8,12 +8,13 @@ import { Link } from "wouter";
 
 import greenLogo from "@assets/Green_1780696036870.png";
 
+import { useQuery } from "@tanstack/react-query";
 import { SERVICES } from "@/data/services";
-import { getFeaturedTestimonials } from "@/data/testimonials";
 import { getAvatarPlaceholder } from "@/lib/media";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ConsultationModal } from "@/components/ConsultationModal";
+import { supabase, type Testimonial } from "@/lib/supabase";
 
 const FADE_UP = {
   hidden: { opacity: 0, y: 30 },
@@ -30,7 +31,20 @@ export default function Home() {
   const yHero = useTransform(scrollYProgress, [0, 0.3], [0, 60]);
   const opacityHero = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
 
-  const testimonials = getFeaturedTestimonials().slice(0, 2);
+  const { data: testimonialsData } = useQuery<Testimonial[]>({
+    queryKey: ["testimonials", "featured"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("testimonials")
+        .select("*")
+        .eq("featured", true)
+        .order("created_at")
+        .limit(4);
+      if (error) throw error;
+      return data;
+    },
+  });
+  const testimonials = testimonialsData?.slice(0, 2) ?? [];
 
   const scrollTo = (id: string) => {
     setTimeout(() => {
@@ -285,7 +299,7 @@ export default function Home() {
                       <div className="font-bold text-foreground text-sm">{t.name}</div>
                       <div className="text-xs text-muted-foreground">{t.role}, {t.company}</div>
                     </div>
-                    <span className="ml-auto text-[10px] text-primary/70 font-bold uppercase tracking-wider hidden sm:block">{t.serviceUsed}</span>
+                    <span className="ml-auto text-[10px] text-primary/70 font-bold uppercase tracking-wider hidden sm:block">{t.service_used}</span>
                   </div>
                 </motion.div>
               ))}

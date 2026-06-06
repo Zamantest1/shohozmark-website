@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { SERVICES } from "@/data/services";
-import { useSubmitContact } from "@workspace/api-client-react";
+import { supabase } from "@/lib/supabase";
 import { CheckCircle2 } from "lucide-react";
 
 interface ConsultationModalProps {
@@ -19,10 +20,19 @@ export function ConsultationModal({ children, open, onOpenChange }: Consultation
   const [form, setForm] = useState({ name: "", email: "", phone: "", businessName: "", serviceInterest: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
 
-  const mutation = useSubmitContact({
-    mutation: {
-      onSuccess: () => setSubmitted(true),
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.from("contact_submissions").insert([{
+        name: form.name,
+        email: form.email,
+        phone: form.phone || null,
+        business_name: form.businessName || null,
+        service_interest: form.serviceInterest || null,
+        message: form.message,
+      }]);
+      if (error) throw error;
     },
+    onSuccess: () => setSubmitted(true),
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -31,16 +41,7 @@ export function ConsultationModal({ children, open, onOpenChange }: Consultation
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    mutation.mutate({
-      data: {
-        name: form.name,
-        email: form.email,
-        phone: form.phone || null,
-        businessName: form.businessName || null,
-        serviceInterest: form.serviceInterest || null,
-        message: form.message,
-      },
-    });
+    mutation.mutate();
   };
 
   const handleOpenChange = (o: boolean) => {
