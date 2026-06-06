@@ -52,6 +52,17 @@ export function Footer() {
 
         <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} ShohozMark. All rights reserved.</p>
+          <p className="text-xs">
+            Designed &amp; built by{" "}
+            <a
+              href="https://shomikujzaman.vercel.app/"
+              target="_blank"
+              rel="noreferrer"
+              className="text-primary hover:underline font-medium"
+            >
+              Shomik
+            </a>
+          </p>
         </div>
       </div>
     </footer>

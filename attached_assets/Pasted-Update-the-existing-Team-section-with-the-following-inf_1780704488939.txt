@@ -1,0 +1,44 @@
+Update the existing Team section with the following information. Do not redesign the section. Maintain the current design, styling, animations, and responsiveness.
+
+Team Member 1
+
+Name: Ibn E Habib
+
+Position: Founder & Managing Director
+
+Bio:
+Leads client acquisition, partnerships, business development, and overall company growth. Focused on building strong client relationships and helping businesses achieve measurable marketing results.
+
+Team Member 2
+
+Name: Shomik Ujzaman
+
+Position: Creative Director & Head of Growth
+
+Bio:
+Oversees the agency's creative vision, branding, content strategy, SEO, website development, social media marketing, and digital growth initiatives. Focused on creating impactful brand experiences, driving audience engagement, and delivering measurable growth for clients through creative and data-driven strategies.
+
+Team Member 3
+
+Name: Asmaul Hoque
+
+Position: Video Production Lead
+
+Bio:
+Specializes in video production, editing, and visual storytelling. Creates engaging visual content that helps brands connect with their audience and strengthen their digital presence across multiple platforms.
+
+Additional Requirements:
+
+- Keep the existing team section design.
+- Maintain full mobile responsiveness.
+- Ensure consistent spacing, alignment, and typography.
+- Support profile photos for each team member.
+- Support future social media profile links.
+- Use professional placeholder images until actual team photos are uploaded.
+- Keep the section structured for future Supabase integration.
+- Preserve the overall premium and professional appearance of the website.
+- Design the team section to support future team expansion without requiring a redesign.
+- Create a scalable layout that can easily accommodate additional team members as the agency grows.
+- Ensure the grid, carousel, or card layout automatically adapts when new members are added.
+- Future team members should be manageable through the backend once Supabase is integrated.
+- Avoid hardcoding the section specifically for three members only.
