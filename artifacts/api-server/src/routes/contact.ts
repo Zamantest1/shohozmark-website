@@ -18,6 +18,11 @@ router.post("/contact", async (req, res): Promise<void> => {
     .values({ name, email, phone: phone ?? null, businessName: businessName ?? null, serviceInterest: serviceInterest ?? null, message })
     .returning();
 
+  if (!submission) {
+    res.status(500).json({ error: "Failed to save submission" });
+    return;
+  }
+
   req.log.info({ submissionId: submission.id }, "Contact form submitted");
 
   res.status(201).json({ id: submission.id, message: "Thank you! We'll be in touch within 24 hours." });
