@@ -34,7 +34,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
   {
     id: "creative-director",
     name: "Shomik Ujzaman",
-    role: "Creative Director & Head of Growth",
+    role: "Creative Director & Co Founder",
     bio: "Oversees the agency's creative vision, branding, content strategy, SEO, website development, social media marketing, and digital growth initiatives. Focused on creating impactful brand experiences, driving audience engagement, and delivering measurable growth for clients through creative and data-driven strategies.",
     shortBio: "Shapes creative vision and growth strategy — from brand identity to SEO, content, and digital performance.",
     initials: "SU",
