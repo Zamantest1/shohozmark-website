@@ -1,5 +1,5 @@
 import React from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import {
   ArrowRight, CheckCircle2, MapPin, Mail, Instagram, Facebook,
   PenTool, LayoutTemplate, Megaphone, Smartphone, Search, Users
@@ -16,7 +16,7 @@ import { Footer } from "@/components/Footer";
 import { ConsultationModal } from "@/components/ConsultationModal";
 import { supabase, type Testimonial } from "@/lib/supabase";
 
-const FADE_UP = {
+const FADE_UP: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };

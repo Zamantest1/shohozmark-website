@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowRight, Target, Lightbulb, Heart, ShieldCheck } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
@@ -8,7 +8,7 @@ import { useSEO } from "@/lib/seo";
 import { TEAM_MEMBERS } from "@/data/team";
 import greenLogo from "@assets/Green_1780696036870.png";
 
-const FADE_UP = {
+const FADE_UP: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };
